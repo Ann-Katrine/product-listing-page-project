@@ -1,85 +1,106 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+    <nav>
+      <ul class="mainNavbar">
+        <li>
+          <ul class="listRow">
+            <li>
+              <RouterLink to="/">mænd</RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/">kvinder</RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/">børn</RouterLink>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h1>BESTSELLER</h1>
+        </li>
+        <li>
+          <ul class="listRow">
+            <li class="seachBox">
+              <input type="text"/>
+              <button class="iconButton">
+                <ion-icon name="search-outline"></ion-icon>
+              </button>
+            </li>
+            <li>
+              <button class="iconButton">
+                <ion-icon name="person-outline"></ion-icon>
+              </button>
+            </li>
+            <li>
+              <button class="iconButton">
+                <ion-icon name="bag-outline"></ion-icon>
+              </button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
   </header>
-
-  <RouterView />
+  <main>
+    <RouterView />
+  </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<style>
+.mainNavbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  margin: 0;
+  padding: 0 10px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.listRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
+li a, li h1 {
   display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  color: #000;
+  text-align: center;
+  text-decoration: none;
 }
 
-nav a:first-of-type {
-  border: 0;
+.iconButton{
+  background-color: inherit;
+  border: none;
+  font-size: 20px;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.seachBox{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+  border: 1px #000 solid;
+  border-radius: 15px;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.seachBox input{
+  border: none;
+  height: 26px;
+  padding: 10px;
+  border-radius:  15px 0 0 15px;
+}
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.seachBox input:focus-visible{
+  outline: none;
 }
 </style>
