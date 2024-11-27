@@ -1,7 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
   <header>
     <nav>
@@ -9,13 +5,13 @@ import { RouterLink, RouterView } from 'vue-router'
         <li>
           <ul class="listRow">
             <li>
-              <RouterLink to="/">mænd</RouterLink>
+              <RouterLink to="/">Mænd</RouterLink>
             </li>
             <li>
-              <RouterLink to="/">kvinder</RouterLink>
+              <RouterLink to="/">Kvinder</RouterLink>
             </li>
             <li>
-              <RouterLink to="/">børn</RouterLink>
+              <RouterLink to="/">Børn</RouterLink>
             </li>
           </ul>
         </li>
@@ -46,11 +42,29 @@ import { RouterLink, RouterView } from 'vue-router'
     </nav>
   </header>
   <main>
+    <nav>
+      <ul class="categoriNavbar">
+        <li v-for="categori in cusotmerCategori">
+          <p>{{ categori.name.dk }}</p>
+        </li>
+      </ul>
+    </nav>
+
     <RouterView />
   </main>
 </template>
 
+<script setup>
+  import { RouterLink, RouterView } from 'vue-router'
+  import json from './assets/data.json'
+
+  const cusotmerCategori = json.categories.categories[0].categories[0].categories
+</script>
+
 <style>
+/****************************************/
+/*             Header navbar            */
+/****************************************/
 .mainNavbar {
   display: flex;
   flex-direction: row;
@@ -78,11 +92,28 @@ li a, li h1 {
   text-decoration: none;
 }
 
-.iconButton{
-  background-color: inherit;
-  border: none;
-  font-size: 20px;
+li h1{
+  padding-left: 149px
 }
+
+/****************************************/
+/*             Categori navbar          */
+/****************************************/
+.categoriNavbar{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  border: 1px #000 solid;
+  border-left: none;
+  border-right: none;
+}
+
+/****************************************/
+/*             Search box               */
+/****************************************/
 
 .seachBox{
   display: flex;
@@ -102,5 +133,14 @@ li a, li h1 {
 
 .seachBox input:focus-visible{
   outline: none;
+}
+
+
+/****************************************/
+
+.iconButton{
+  background-color: inherit;
+  border: none;
+  font-size: 20px;
 }
 </style>
