@@ -5,13 +5,13 @@
         <li>
           <ul class="listRow">
             <li>
-              <RouterLink to="/">Mænd</RouterLink>
+              <button @click="changeCategoriAfterWhatCustomerHasBeenChossen(0)" class="chosseCustomerButton">Mænd</button>
             </li>
             <li>
-              <RouterLink to="/">Kvinder</RouterLink>
+              <button @click="changeCategoriAfterWhatCustomerHasBeenChossen(1)" class="chosseCustomerButton">Kvinder</button>
             </li>
             <li>
-              <RouterLink to="/">Børn</RouterLink>
+              <button @click="changeCategoriAfterWhatCustomerHasBeenChossen(2)" class="chosseCustomerButton">Børn</button>
             </li>
           </ul>
         </li>
@@ -44,8 +44,8 @@
   <main>
     <nav>
       <ul class="categoriNavbar">
-        <li v-for="categori in cusotmerCategori">
-          <p>{{ categori.name.dk }}</p>
+        <li v-for="categori in customerCategori">
+          <RouterLink :to="'/' + chosenCustomer + '/' + categori.name.dk">{{ categori.name.dk }}</RouterLink>
         </li>
       </ul>
     </nav>
@@ -55,10 +55,39 @@
 </template>
 
 <script setup>
-  import { RouterLink, RouterView } from 'vue-router'
+  import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
+  import { onMounted, ref, watch } from 'vue';
   import json from './assets/data.json'
 
-  const cusotmerCategori = json.categories.categories[0].categories[0].categories
+  const customerCategori = ref(json.categories.categories[0].categories[0].categories)
+  const route = useRoute()
+  const changeRoute = useRouter()
+  const chosenCustomer = ref('man')
+
+  watch(
+    () => route.params.id,
+    (newId, oldId) => {
+    }
+  )
+
+  function changeCategoriAfterWhatCustomerHasBeenChossen(number){
+    if(number != 2){
+      chosenCustomer.value = json.categories.categories[0].categories[number].name.en
+      customerCategori.value = json.categories.categories[0].categories[number].categories
+      changeRoute.push("/" + chosenCustomer.value)
+    } else {
+      chosenCustomer.value = json.categories.categories[1].name.en
+      changeRoute.push("/" + chosenCustomer.value)
+    }
+    
+  }
+
+  // It will run when the site as been loaded 
+  onMounted(() => {
+    if(!route.params.id){
+      changeRoute.push('/Men')
+    }
+  })
 </script>
 
 <style>
@@ -137,10 +166,17 @@ li h1{
 
 
 /****************************************/
-
+/*             Button styling           */
+/****************************************/
 .iconButton{
   background-color: inherit;
   border: none;
   font-size: 20px;
+}
+
+.chosseCustomerButton{
+  background-color: inherit;
+  border: none;
+  font-size: 15px;
 }
 </style>
