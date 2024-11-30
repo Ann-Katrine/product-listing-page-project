@@ -1,7 +1,9 @@
 <template>
-  <header>
+  <header class="headerFixed">
+    <!-- Top navbar -->
     <nav>
       <ul class="mainNavbar">
+        <!-- Left -->
         <li>
           <ul class="listRow">
             <li>
@@ -15,9 +17,11 @@
             </li>
           </ul>
         </li>
+        <!-- Center -->
         <li>
           <h1>BESTSELLER</h1>
         </li>
+        <!-- Right -->
         <li>
           <ul class="listRow">
             <li class="seachBox">
@@ -40,8 +44,7 @@
         </li>
       </ul>
     </nav>
-  </header>
-  <main>
+    <!-- Categori navbar -->
     <nav>
       <ul class="categoriNavbar">
         <li v-for="categori in customerCategori">
@@ -49,35 +52,50 @@
         </li>
       </ul>
     </nav>
-
+  </header>
+  <main class="mainMargin">
     <RouterView />
   </main>
 </template>
 
 <script setup>
   import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
-  import { onMounted, ref, watch } from 'vue';
+  import { onMounted, ref } from 'vue';
   import json from './assets/data.json'
+  import { useProductsStore } from '@/stores/Products'
 
   const customerCategori = ref(json.categories.categories[0].categories[0].categories)
   const route = useRoute()
   const changeRoute = useRouter()
-  const chosenCustomer = ref('man')
-
-  watch(
-    () => route.params.id,
-    (newId, oldId) => {
-    }
-  )
+  const chosenCustomer = ref('Men')
+  const theProduct = useProductsStore()
 
   function changeCategoriAfterWhatCustomerHasBeenChossen(number){
+    let routePath = []
+    routePath = route.params.id.split("/")
+
     if(number != 2){
       chosenCustomer.value = json.categories.categories[0].categories[number].name.en
       customerCategori.value = json.categories.categories[0].categories[number].categories
-      changeRoute.push("/" + chosenCustomer.value)
+      if(routePath[1] == undefined){
+        changeRoute.push("/" + chosenCustomer.value + "/Nyheder")
+
+      } else {
+        changeRoute.push("/" + chosenCustomer.value + "/" + routePath[1])
+
+      }
     } else {
       chosenCustomer.value = json.categories.categories[1].name.en
       changeRoute.push("/" + chosenCustomer.value)
+    }
+
+    switch (number) {
+      case 0:
+      theProduct.setColor('men')
+        break;
+      case 1:
+      theProduct.setColor('women')
+        break;
     }
     
   }
@@ -85,7 +103,9 @@
   // It will run when the site as been loaded 
   onMounted(() => {
     if(!route.params.id){
-      changeRoute.push('/Men')
+      changeRoute.push('/Men/Nyheder')
+      theProduct.changeProduct('Men', 'Nyheder')
+      theProduct.setColor('men')
     }
   })
 </script>
@@ -103,6 +123,7 @@
 
   margin: 0;
   padding: 0 10px;
+  background-color: #fff;
 }
 
 .listRow{
@@ -178,5 +199,17 @@ li h1{
   background-color: inherit;
   border: none;
   font-size: 15px;
+}
+
+/****************************************/
+.headerFixed{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+}
+
+.mainMargin{
+  margin-top: 61px;
 }
 </style>
